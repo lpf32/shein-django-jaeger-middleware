@@ -17,6 +17,14 @@ MIDDLEWARE = [
 ]
 ```
 
+在配置文件中cfg.ini中添加配置信息
+```
+[jaeger]
+service_name = your_service
+reporting_host = 10.180.100.31
+reporting_port = 6831
+```
+
 ## Getting Started
 从shein_django_jaeger_middleware引入requests，如原requests库一样使用
 ```python
