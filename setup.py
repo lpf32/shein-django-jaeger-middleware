@@ -12,7 +12,7 @@ with open(os.path.join(MIDDLEWARE_BASE_DIR, 'README.md')) as f:
 setup(
     name='shein-django-jaeger-middleware',
     license='MIT',
-    version='0.0.1',
+    version='0.1.0',
     description='python(django) tracing middleware tool: django-jaeger-middleware',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -22,9 +22,10 @@ setup(
     packages=find_packages(),
     install_requires=[
         "jaeger_client",
-        "opentracing"
+        "opentracing",
+        "requests"
     ],
-    keywords=['django', 'jaeger', 'jaegertracing'],
+    keywords=['django', 'jaeger', 'jaegertracing', 'requests'],
     classifiers=[
         "Framework :: Django",
         "Programming Language :: Python :: 3",

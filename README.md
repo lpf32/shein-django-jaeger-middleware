@@ -17,5 +17,13 @@ MIDDLEWARE = [
 ]
 ```
 
+## Getting Started
+从shein_django_jaeger_middleware引入requests，如原requests库一样使用
+```python
+from shein_django_jaeger_middleware import requests
+
+req = requests.get(url, headers=headers)
+```
+
 ## Enjoy!
 如有问题请联系我：[zhpan188@gmail.com](zhpan188@gmial.com)
