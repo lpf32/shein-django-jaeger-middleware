@@ -13,7 +13,7 @@ $ pip install shein-django-jaeger-middleware
 ```
 MIDDLEWARE = [
 	...
-	'django_jaeger_middleware.middleware.JaegerMiddleWare'
+	'shein_django_jaeger_middleware.middleware.JaegerMiddleWare'
 ]
 ```
 
@@ -21,8 +21,8 @@ MIDDLEWARE = [
 ```
 [jaeger]
 service_name = your_service
-reporting_host = 10.180.100.31
-reporting_port = 6831
+reporting_host = your_jaeger_ip
+reporting_port = your_jaeger_udp_port
 ```
 
 ## Getting Started
