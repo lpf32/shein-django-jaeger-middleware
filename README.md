@@ -13,7 +13,7 @@ $ pip install shein-django-jaeger-middleware
 ```
 MIDDLEWARE = [
 	...
-	'shein_django_jaeger_middleware.middleware.JaegerMiddleWare'
+	'shein_django_jaeger_middleware.middleware.JaegerMiddleware'
 ]
 ```
 
