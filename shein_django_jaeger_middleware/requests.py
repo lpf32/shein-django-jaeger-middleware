@@ -9,7 +9,7 @@ def jaeger_decorator(method):
     def inner(fn):
         def __decorator(*args, **kwargs):
             url = args[0]
-            span_tags = {tags.HTTP_METHOD: 'GET', tags.HTTP_URL: url, tags.SPAN_KIND: tags.SPAN_KIND_RPC_CLIENT}
+            span_tags = {tags.HTTP_METHOD: method, tags.HTTP_URL: url, tags.SPAN_KIND: tags.SPAN_KIND_RPC_CLIENT}
             if 'headers' in kwargs:
                 headers = kwargs.get('headers')
             else:
@@ -19,12 +19,13 @@ def jaeger_decorator(method):
                 tracer.inject(span, Format.HTTP_HEADERS, headers)
                 kwargs.update({'headers': headers})
                 req = fn(*args, **kwargs)
-                if 'code' in req.json() and req.json()['code'] not in ['0', 200]:
-                    span.set_tag(tags.HTTP_STATUS_CODE, int(req.json()['code']))
+                result = req.json()
+                if 'code' in result and result['code'] not in ['0', 200]:
+                    span.set_tag(tags.HTTP_STATUS_CODE, int(result['code']))
                     span.set_tag(tags.ERROR, True)
                 else:
                     span.set_tag(tags.HTTP_STATUS_CODE, req.status_code)
-                span.log_kv({'body': req.content})
+                span.log_kv({'body': result})
             return req
         return __decorator
     return inner

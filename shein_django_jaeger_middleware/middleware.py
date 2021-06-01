@@ -19,6 +19,6 @@ class JaegerMiddleware(object):
             tracer.inject(scope.span, Format.HTTP_HEADERS, request.META)
             response = self.get_response(request)
             response[TRACE_ID_HEADER] = request.META.get(TRACE_ID_HEADER, "")
-            scope.span.log_kv({'body': response.content})
+            scope.span.log_kv({'body': getattr(response, 'content', '')})
         return response
 
