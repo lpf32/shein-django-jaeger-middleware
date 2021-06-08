@@ -8,7 +8,10 @@ from . import tracer
 def jaeger_decorator(method):
     def inner(fn):
         def __decorator(*args, **kwargs):
-            url = args[0]
+            if 'url' in kwargs:
+                url = kwargs.get('url')
+            else:
+                url = args[0]
             span_tags = {tags.HTTP_METHOD: method, tags.HTTP_URL: url, tags.SPAN_KIND: tags.SPAN_KIND_RPC_CLIENT}
             if 'headers' in kwargs:
                 headers = kwargs.get('headers')
