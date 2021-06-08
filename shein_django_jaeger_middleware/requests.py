@@ -54,3 +54,20 @@ def delete(url, headers=None, **kwargs):
 @jaeger_decorator('PATCH')
 def patch(url, data=None, headers=None, **kwargs):
     return requests.patch(url, data=data, headers=headers, **kwargs)
+
+
+def request(method, url, **kwargs):
+    method = str.lower(method)
+    if method == 'get':
+        req = get(url, **kwargs)
+    elif method == 'put':
+        req = put(url, **kwargs)
+    elif method == 'post':
+        req = post(url, **kwargs)
+    elif method == 'delete':
+        req = delete(url, **kwargs)
+    elif method == 'patch':
+        req = patch(url, **kwargs)
+    else:
+        return ValueError('Unknown HTTP Method: {}'.format(method))
+    return req
