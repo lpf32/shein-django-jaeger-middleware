@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from opentracing import Format
 from opentracing.ext import tags
+import json
 
 from . import tracer, TRACE_ID_HEADER
 
@@ -19,6 +20,13 @@ class JaegerMiddleware(object):
             tracer.inject(scope.span, Format.HTTP_HEADERS, request.META)
             response = self.get_response(request)
             response[TRACE_ID_HEADER] = request.META.get(TRACE_ID_HEADER, "")
-            scope.span.log_kv({'body': getattr(response, 'content', '')})
+
+            content = json.loads(getattr(response, 'content', '{}'))
+            if 'code' in content and content['code'] not in ['0', 200]:
+                scope.span.set_tag(tags.HTTP_STATUS_CODE, int(content['code']))
+                scope.span.set_tag(tags.ERROR, True)
+            else:
+                scope.span.set_tag(tags.HTTP_STATUS_CODE, response.status_code)
+            scope.span.log_kv({'body': content})
         return response
 
