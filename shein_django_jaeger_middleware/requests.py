@@ -22,12 +22,12 @@ def jaeger_decorator(method):
                 tracer.inject(span, Format.HTTP_HEADERS, headers)
                 kwargs.update({'headers': headers})
                 req = fn(*args, **kwargs)
-                result = req.json()
-                if 'code' in result and result['code'] not in ['0', 200]:
-                    span.set_tag(tags.HTTP_STATUS_CODE, int(result['code']))
-                    span.set_tag(tags.ERROR, True)
-                else:
-                    span.set_tag(tags.HTTP_STATUS_CODE, req.status_code)
+                span.set_tag(tags.HTTP_STATUS_CODE, req.status_code)
+                if 'application/json' in req.headers['content-type']:
+                    result = req.json()
+                    if 'code' in result and result['code'] not in ['0', 200]:
+                        span.set_tag(tags.HTTP_STATUS_CODE, int(result['code']))
+                        span.set_tag(tags.ERROR, True)
                 span.log_kv({'body': result})
             return req
         return __decorator
