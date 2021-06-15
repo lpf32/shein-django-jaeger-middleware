@@ -21,7 +21,11 @@ class JaegerMiddleware(object):
             response = self.get_response(request)
             response[TRACE_ID_HEADER] = request.META.get(TRACE_ID_HEADER, "")
 
-            content = json.loads(getattr(response, 'content', '{}'))
+            if 'application/json' in request.headers['content-type']:
+                content = json.loads(getattr(response, 'content', '{}'))
+            else:
+                content = ''
+
             if 'code' in content and content['code'] not in ['0', 200]:
                 scope.span.set_tag(tags.HTTP_STATUS_CODE, int(content['code']))
                 scope.span.set_tag(tags.ERROR, True)
