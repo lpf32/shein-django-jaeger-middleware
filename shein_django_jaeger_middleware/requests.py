@@ -24,7 +24,10 @@ def jaeger_decorator(method):
                 req = fn(*args, **kwargs)
                 span.set_tag(tags.HTTP_STATUS_CODE, req.status_code)
                 if 'application/json' in req.headers['content-type']:
-                    result = req.json()
+                    if req.content != '':
+                        result = req.json()
+                    else:
+                        result = {}
                     if 'code' in result and result['code'] not in ['0', 200]:
                         span.set_tag(tags.HTTP_STATUS_CODE, int(result['code']))
                         span.set_tag(tags.ERROR, True)
