@@ -12,7 +12,7 @@ with open(os.path.join(MIDDLEWARE_BASE_DIR, 'README.md')) as f:
 setup(
     name='shein-django-jaeger-middleware',
     license='MIT',
-    version='0.2.8',
+    version='0.2.9',
     description='python(django) tracing middleware tool: django-jaeger-middleware',
     long_description=long_description,
     long_description_content_type="text/markdown",

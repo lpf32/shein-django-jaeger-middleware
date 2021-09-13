@@ -24,7 +24,7 @@ def jaeger_decorator(method):
                 req = fn(*args, **kwargs)
                 span.set_tag(tags.HTTP_STATUS_CODE, req.status_code)
                 if 'application/json' in req.headers['content-type']:
-                    if req.content != '':
+                    if req.content:
                         result = req.json()
                     else:
                         result = {}
