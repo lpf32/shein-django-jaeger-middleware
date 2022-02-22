@@ -23,7 +23,7 @@ def jaeger_decorator(method):
                 kwargs.update({'headers': headers})
                 req = fn(*args, **kwargs)
                 span.set_tag(tags.HTTP_STATUS_CODE, req.status_code)
-                if 'application/json' in req.headers['content-type']:
+                if req.headers.get('content-type') and 'application/json' in req.headers.get('content-type'):
                     if req.content:
                         result = req.json()
                     else:
@@ -31,6 +31,10 @@ def jaeger_decorator(method):
                     if 'code' in result and result['code'] not in ['0', 200]:
                         span.set_tag(tags.HTTP_STATUS_CODE, int(result['code']))
                         span.set_tag(tags.ERROR, True)
+                elif req.content:
+                    result = req.content
+                else:
+                    result = {}
                 span.log_kv({'body': result})
             return req
         return __decorator
